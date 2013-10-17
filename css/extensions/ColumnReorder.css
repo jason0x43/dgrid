@@ -12,3 +12,15 @@
 #dgrid-css-extensions-ColumnReorder-loaded { /* load indicator for xstyle */
 	display: none;
 }
+
+.dojoDndAvatar {
+	color: #aaaaaa;
+	border: solid 1px #aaaaaa;
+	position: absolute;
+	z-index: 1999;
+}
+
+.dojoDndAvatarCanDrop {
+	color: black;
+	border-color: black;
+}

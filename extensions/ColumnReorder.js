@@ -5,10 +5,12 @@ define([
 	"dojo/on",
 	"dojo/query",
 	"dojo/dnd/Source",
+	"dojo/dnd/Manager",
 	"put-selector/put",
 	"xstyle/css!../css/extensions/ColumnReorder.css"
-], function(lang, declare, arrayUtil, on, query, DndSource, put){
-	var dndTypeRx = /(\d+)(?:-(\d+))?$/; // used to determine subrow from dndType
+], function(lang, declare, arrayUtil, on, query, DndSource, DndManager, put){
+	var dndTypeRx = /(\d+)(?:-(\d+))?$/, // used to determine subrow from dndType
+		manager = DndManager.manager();
 	
 	// The following 2 functions are used by onDropInternal logic for
 	// retrieving/modifying a given subRow.  The `match` variable in each is
@@ -189,5 +191,24 @@ define([
 	});
 	
 	ColumnReorder.ColumnDndSource = ColumnDndSource;
+
+	manager.makeAvatar = function makeAvatar(){
+		var node = put("table.dojoDndAvatar.ui-widget-header"),
+			row = put(node, "tbody tr"),
+			cell = manager.nodes[0].cloneNode(true);
+		row.appendChild(cell);
+		cell.style.border = 'none';
+
+		return {
+			update: function(){
+				put(this.node, (manager.canDropFlag ? "" : "!") + ".dojoDndAvatarCanDrop") 
+			},
+			destroy: function(){
+				put(this.node, "!");
+			},
+			node: node
+		}
+	}
+
 	return ColumnReorder;
 });
